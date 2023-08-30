@@ -1,5 +1,5 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import TrackerCard from "./components/TrackerCard"
+import Trackers from "./components/Trackers"
 
 const darkTheme = createTheme({
   palette: {
@@ -10,7 +10,7 @@ const darkTheme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
-      <TrackerCard />
+      <Trackers />
     </ThemeProvider>
   );
 }

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DoneIcon from '@mui/icons-material/Done';
@@ -12,33 +11,38 @@ import {
   Typography,
 } from '@mui/material';
 
-const config = {
-  id: "12345",
-  title: 'Pranayama 8/2/8/2',
-  target: 5,
-  usePenalty: true,
-  left: 5,
-  lastSessionDate: '2023-08-22T15:59:39.136Z',
-};
+export default function Progress({ data, actions }) {
+  const { title, target, usePenalty, left } = data;
 
-export default function Progress({ openSettings }) {
-  const { title, target, usePenalty, left } = config;
+  const {toggleSettings, update} = actions
 
   const step = target - left;
 
-  const [activeStep, setActiveStep] = useState(step);
+  const moveProgress = () => {
+    const newData = {
+      ...data,
+      left: data.left - 1,
+      last: new Date().toISOString(),
+    }
+    update(newData)
+  }
 
-  const next = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const resetProgress = () => {
+    const newData = {
+      ...data,
+      left: data.target,
+      last: '',
+    }
+    update(newData)
+  }
 
-  const reset = () => setActiveStep(0);
-
-  const isCompleted = activeStep === target;
+  const isCompleted = step === target;
 
   return (
     <>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="h5">{title}</Typography>
-        <IconButton onClick={openSettings} aria-label="settings">
+        <IconButton onClick={toggleSettings} aria-label="settings">
           <SettingsIcon />
         </IconButton>
       </Stack>
@@ -46,7 +50,7 @@ export default function Progress({ openSettings }) {
         variant="progress"
         steps={target + 1}
         position="static"
-        activeStep={activeStep}
+        activeStep={step}
         sx={{ marginTop: 1 }}
         LinearProgressProps={{
           sx: {
@@ -66,8 +70,8 @@ export default function Progress({ openSettings }) {
         <Button
           variant="outlined"
           size="medium"
-          onClick={reset}
-          disabled={activeStep === 0}
+          onClick={resetProgress}
+          disabled={step === 0}
         >
           Reset
         </Button>
@@ -79,7 +83,7 @@ export default function Progress({ openSettings }) {
         <Button
           variant="outlined"
           size="medium"
-          onClick={next}
+          onClick={moveProgress}
           disabled={isCompleted}
         >
           Done

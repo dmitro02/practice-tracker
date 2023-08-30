@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 import {
   Stack,
@@ -10,18 +11,14 @@ import {
   Checkbox,
 } from '@mui/material';
 
-const config = {
-  title: 'Pranayama 8/2/8/2',
-  numberOfSessions: 5,
-  penalty: true,
-};
+export default function Settings({ data, actions }) {
+  const { title, target, usePenalty } = data;
 
-export default function Settings({ closeSettings }) {
-  const { title, numberOfSessions, penalty } = config;
+  const {toggleSettings, update, remove} = actions
 
-  const [sessionsNumber, setSessionsNumber] = useState(numberOfSessions);
+  const [sessionsNumber, setSessionsNumber] = useState(target);
   const [practiceTitle, setPracticeTitle] = useState(title);
-  const [usePenalty, setUsePenalty] = useState(penalty);
+  const [shouldUsePenalty, setShouldUsePenalty] = useState(usePenalty);
   const [sessionsNumberError, setSessionsNumberError] = useState(false);
 
   const checkIsNumber = (val) => /^[0-9]+$/.test(val);
@@ -31,7 +28,7 @@ export default function Settings({ closeSettings }) {
       ? setSessionsNumberError(true)
       : setSessionsNumberError(false);
 
-  const handlePenaltyChange = () => setUsePenalty((prev) => !prev);
+  const handlePenaltyChange = () => setShouldUsePenalty((prev) => !prev);
   const handleTitleChange = (e) => setPracticeTitle(e.target.value);
 
   const handleNumberChange = (e) => {
@@ -40,8 +37,24 @@ export default function Settings({ closeSettings }) {
     setSessionsNumber(val);
   };
 
+  const deleteTracker = () => remove(data.id)
+
+  const updateTracker = () => {
+    const newTarget = parseInt(sessionsNumber)
+    const {target: oldTarget, left: oldLeft} = data
+    const newData = {
+      ...data,
+      target: newTarget,
+      title: practiceTitle,
+      usePenalty: shouldUsePenalty,
+      left: newTarget - oldTarget + oldLeft 
+    }
+    update(newData)
+    toggleSettings()
+  }
+
   return (
-    <Box p={1} pr={0}>
+    <Box p={1} pr={0} pt={0}>
       <Stack
         direction="row"
         justifyContent="space-between"
@@ -58,7 +71,16 @@ export default function Settings({ closeSettings }) {
           fullWidth
         />
         <IconButton
-          onClick={closeSettings}
+          color="error"
+          onClick={deleteTracker}
+          disabled={sessionsNumberError}
+          aria-label="settings"
+        >
+          <RemoveCircleOutlineIcon />
+        </IconButton>
+        <IconButton
+          color="success"
+          onClick={updateTracker}
           disabled={sessionsNumberError}
           aria-label="settings"
         >
@@ -80,7 +102,7 @@ export default function Settings({ closeSettings }) {
           control={
             <Checkbox
               size="small"
-              checked={usePenalty}
+              checked={shouldUsePenalty}
               onChange={handlePenaltyChange}
             />
           }
