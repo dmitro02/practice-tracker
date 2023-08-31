@@ -1,14 +1,12 @@
-import { useState } from 'react'
 import { Paper } from '@mui/material'
 import Progress from './Progress'
 import Settings from './Settings'
+import { useToggle } from '../utils/hooks'
 
 export default function Tracker({ data, actions }) {
-  const [showSettings, setShowSettings] = useState(false)
+  const [showSettings, toggleSettings] = useToggle()
 
   const { update, remove } = actions
-
-  const toggleSettings = () => setShowSettings((prev) => !prev)
 
   const progressActions = {
     toggleSettings,

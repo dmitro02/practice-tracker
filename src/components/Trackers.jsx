@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import Tracker from './Tracker'
 import { nanoid } from 'nanoid'
-import { Button } from '@mui/material'
+import { Stack, IconButton } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
 
 const TEMPLATE = {
   id: '',
@@ -48,12 +49,18 @@ export default function Trackers() {
 
   return (
     <>
+      <Stack direction="row" justifyContent="right">
+        <IconButton
+          onClick={create}
+          aria-label="create"
+          sx={{ paddingBottom: 0 }}
+        >
+          <AddIcon />
+        </IconButton>
+      </Stack>
       {data?.map((it) => (
         <Tracker data={it} actions={actions} key={it.id} />
       ))}
-      <Button variant="outlined" onClick={create}>
-        Create
-      </Button>
     </>
   )
 }
