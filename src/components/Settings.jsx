@@ -2,6 +2,7 @@ import { useState } from 'react';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useToggle } from '../utils/hooks';
+import { checkIsNumber } from '../utils/utils';
 
 import {
   Stack,
@@ -23,8 +24,6 @@ export default function Settings({ data, actions }) {
   const [practiceTitle, setPracticeTitle] = useState(title)
   const [shouldUsePenalty, setShouldUsePenalty] = useState(usePenalty)
   const [sessionsNumberError, setSessionsNumberError] = useState(false)
-
-  const checkIsNumber = (val) => /^[0-9]+$/.test(val);
 
   const validateSessionsNumber = (val) =>
     val === '' || val === 0 || !checkIsNumber(val)

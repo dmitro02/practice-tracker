@@ -1,0 +1,1 @@
+export const checkIsNumber = (val) => /^[0-9]+$/.test(val)
