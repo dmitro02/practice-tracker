@@ -1,6 +1,6 @@
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SettingsIcon from '@mui/icons-material/Settings';
-import DoneIcon from '@mui/icons-material/Done';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import SettingsIcon from '@mui/icons-material/Settings'
+import DoneIcon from '@mui/icons-material/Done'
 
 import {
   Stack,
@@ -9,14 +9,14 @@ import {
   MobileStepper,
   IconButton,
   Typography,
-} from '@mui/material';
+} from '@mui/material'
 
 export default function Progress({ data, actions }) {
-  const { title, target, usePenalty, left } = data;
+  const { title, target, usePenalty, left } = data
 
-  const {toggleSettings, update} = actions
+  const { toggleSettings, update } = actions
 
-  const step = target - left;
+  const step = target - left
 
   const moveProgress = () => {
     const newData = {
@@ -36,7 +36,7 @@ export default function Progress({ data, actions }) {
     update(newData)
   }
 
-  const isCompleted = step === target;
+  const isCompleted = step === target
 
   return (
     <>
@@ -91,5 +91,5 @@ export default function Progress({ data, actions }) {
         </Button>
       </Stack>
     </>
-  );
+  )
 }

@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { useToggle } from '../utils/hooks';
-import { checkIsNumber } from '../utils/utils';
+import { useState } from 'react'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
+import { useToggle } from '../utils/hooks'
+import { checkIsNumber } from '../utils/utils'
 
 import {
   Stack,
@@ -11,13 +11,13 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
-} from '@mui/material';
-import Confirmation from './Confirmation';
+} from '@mui/material'
+import Confirmation from './Confirmation'
 
 export default function Settings({ data, actions }) {
-  const { title, target, usePenalty } = data;
+  const { title, target, usePenalty } = data
 
-  const {toggleSettings, update, remove} = actions
+  const { toggleSettings, update, remove } = actions
 
   const [isConfirmationOpen, toggleConfirmation] = useToggle()
   const [sessionsNumber, setSessionsNumber] = useState(target)
@@ -28,28 +28,28 @@ export default function Settings({ data, actions }) {
   const validateSessionsNumber = (val) =>
     val === '' || val === 0 || !checkIsNumber(val)
       ? setSessionsNumberError(true)
-      : setSessionsNumberError(false);
+      : setSessionsNumberError(false)
 
-  const handlePenaltyChange = () => setShouldUsePenalty((prev) => !prev);
-  const handleTitleChange = (e) => setPracticeTitle(e.target.value);
+  const handlePenaltyChange = () => setShouldUsePenalty((prev) => !prev)
+  const handleTitleChange = (e) => setPracticeTitle(e.target.value)
 
   const handleNumberChange = (e) => {
-    const val = e.target.value;
-    validateSessionsNumber(val);
-    setSessionsNumber(val);
-  };
+    const val = e.target.value
+    validateSessionsNumber(val)
+    setSessionsNumber(val)
+  }
 
   const deleteTracker = () => remove(data.id)
 
   const updateTracker = () => {
     const newTarget = parseInt(sessionsNumber)
-    const {target: oldTarget, left: oldLeft} = data
+    const { target: oldTarget, left: oldLeft } = data
     const newData = {
       ...data,
       target: newTarget,
       title: practiceTitle,
       usePenalty: shouldUsePenalty,
-      left: newTarget - oldTarget + oldLeft 
+      left: newTarget - oldTarget + oldLeft,
     }
     update(newData)
     toggleSettings()
@@ -72,7 +72,7 @@ export default function Settings({ data, actions }) {
             variant="standard"
             size="small"
             fullWidth
-            sx={{marginRight: 6}}
+            sx={{ marginRight: 6 }}
           />
           <IconButton
             color="error"
@@ -111,7 +111,7 @@ export default function Settings({ data, actions }) {
               />
             }
             label="Use penalty"
-            sx={{marginLeft: 1}}
+            sx={{ marginLeft: 1 }}
           />
         </Stack>
       </Box>
@@ -122,5 +122,5 @@ export default function Settings({ data, actions }) {
         onConfirm={deleteTracker}
       />
     </>
-  );
+  )
 }

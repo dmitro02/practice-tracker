@@ -1,12 +1,12 @@
 import {
-  Button, 
-  Dialog, 
-  DialogActions, 
-  DialogContent, 
-  DialogContentText
-} from '@mui/material';
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from '@mui/material'
 
-export default function Confirmation({isOpen, content, onClose, onConfirm}) {
+export default function Confirmation({ isOpen, content, onClose, onConfirm }) {
   const confirm = () => {
     onConfirm()
     onClose()
@@ -25,9 +25,11 @@ export default function Confirmation({isOpen, content, onClose, onConfirm}) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} autoFocus>Cancel</Button>
+        <Button onClick={onClose} autoFocus>
+          Cancel
+        </Button>
         <Button onClick={confirm}>OK</Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }

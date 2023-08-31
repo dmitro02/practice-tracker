@@ -1,24 +1,25 @@
-import { useEffect, useState } from 'react';
-import Tracker from './Tracker';
-import { nanoid } from 'nanoid';
-import { Button } from '@mui/material';
+import { useEffect, useState } from 'react'
+import Tracker from './Tracker'
+import { nanoid } from 'nanoid'
+import { Button } from '@mui/material'
 
 const TEMPLATE = {
-  id: "",
+  id: '',
   title: 'New Practice',
   target: 5,
   usePenalty: true,
   left: 5,
-  last: "",
-};
+  last: '',
+}
 
-const LS_ITEM_NAME = "trackers"
+const LS_ITEM_NAME = 'trackers'
 
 export default function Trackers() {
   const load = () => JSON.parse(localStorage.getItem(LS_ITEM_NAME))
-  const save = (data) => localStorage.setItem(LS_ITEM_NAME, JSON.stringify(data))
+  const save = (data) =>
+    localStorage.setItem(LS_ITEM_NAME, JSON.stringify(data))
 
-  const getNewPractice = () => ({...TEMPLATE, id: nanoid()})
+  const getNewPractice = () => ({ ...TEMPLATE, id: nanoid() })
 
   const [data, setData] = useState(load() || [getNewPractice()])
 
@@ -37,19 +38,22 @@ export default function Trackers() {
   }
 
   const update = (tracker) => {
-    const newData = data.map((it) =>
-      it.id === tracker.id ? tracker : it)
+    const newData = data.map((it) => (it.id === tracker.id ? tracker : it))
     setData(newData)
   }
 
-  const actions = {update, remove}
+  const actions = { update, remove }
 
-  const deleteConfirmationText = "Do you want to delete this tracker?"
+  const deleteConfirmationText = 'Do you want to delete this tracker?'
 
   return (
     <>
-      {data?.map((it) => <Tracker data={it} actions={actions} key={it.id} />)}
-      <Button variant="outlined" onClick={create}>Create</Button>
+      {data?.map((it) => (
+        <Tracker data={it} actions={actions} key={it.id} />
+      ))}
+      <Button variant="outlined" onClick={create}>
+        Create
+      </Button>
     </>
-  );
+  )
 }

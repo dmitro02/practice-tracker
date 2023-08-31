@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { Paper } from '@mui/material';
-import Progress from './Progress';
-import Settings from './Settings';
+import { useState } from 'react'
+import { Paper } from '@mui/material'
+import Progress from './Progress'
+import Settings from './Settings'
 
 export default function Tracker({ data, actions }) {
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState(false)
 
-  const {update, remove} = actions
+  const { update, remove } = actions
 
-  const toggleSettings = () => setShowSettings((prev) => !prev);
+  const toggleSettings = () => setShowSettings((prev) => !prev)
 
   const progressActions = {
     toggleSettings,
-    update
-  };
+    update,
+  }
 
   const settingsActions = {
     toggleSettings,
     update,
-    remove
+    remove,
   }
 
   return (
@@ -29,5 +29,5 @@ export default function Tracker({ data, actions }) {
         <Progress data={data} actions={progressActions} />
       )}
     </Paper>
-  );
+  )
 }
