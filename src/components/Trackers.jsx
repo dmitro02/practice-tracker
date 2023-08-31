@@ -44,6 +44,8 @@ export default function Trackers() {
 
   const actions = {update, remove}
 
+  const deleteConfirmationText = "Do you want to delete this tracker?"
+
   return (
     <>
       {data?.map((it) => <Tracker data={it} actions={actions} key={it.id} />)}

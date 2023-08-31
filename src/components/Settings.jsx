@@ -10,16 +10,18 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
+import Confirmation from './Confirmation';
 
 export default function Settings({ data, actions }) {
   const { title, target, usePenalty } = data;
 
   const {toggleSettings, update, remove} = actions
 
-  const [sessionsNumber, setSessionsNumber] = useState(target);
-  const [practiceTitle, setPracticeTitle] = useState(title);
-  const [shouldUsePenalty, setShouldUsePenalty] = useState(usePenalty);
-  const [sessionsNumberError, setSessionsNumberError] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
+  const [sessionsNumber, setSessionsNumber] = useState(target)
+  const [practiceTitle, setPracticeTitle] = useState(title)
+  const [shouldUsePenalty, setShouldUsePenalty] = useState(usePenalty)
+  const [sessionsNumberError, setSessionsNumberError] = useState(false)
 
   const checkIsNumber = (val) => /^[0-9]+$/.test(val);
 
@@ -53,64 +55,75 @@ export default function Settings({ data, actions }) {
     toggleSettings()
   }
 
+  const toggleConfirmationDialog = 
+    () => setIsConfirmationOpen((prev) => !prev)
+
   return (
-    <Box p={1} pr={0} pt={0}>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        mb={1}
-      >
-        <TextField
-          id="title"
-          value={practiceTitle}
-          onChange={handleTitleChange}
-          label="Practice Title"
-          variant="standard"
-          size="small"
-          fullWidth
-          sx={{marginRight: 6}}
-        />
-        <IconButton
-          color="error"
-          onClick={deleteTracker}
-          disabled={sessionsNumberError}
-          aria-label="settings"
+    <>
+      <Box p={1} pr={0} pt={0}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+          mb={1}
         >
-          <RemoveCircleOutlineIcon />
-        </IconButton>
-        <IconButton
-          color="success"
-          onClick={updateTracker}
-          disabled={sessionsNumberError}
-          aria-label="settings"
-        >
-          <CheckCircleOutlineIcon />
-        </IconButton>
-      </Stack>
-      <Stack direction="row">
-        <TextField
-          id="sessions"
-          value={sessionsNumber}
-          onChange={handleNumberChange}
-          error={sessionsNumberError}
-          label="Number of Sessions"
-          variant="standard"
-          size="small"
-          required
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={shouldUsePenalty}
-              onChange={handlePenaltyChange}
-            />
-          }
-          label="Use penalty"
-          sx={{marginLeft: 1}}
-        />
-      </Stack>
-    </Box>
+          <TextField
+            id="title"
+            value={practiceTitle}
+            onChange={handleTitleChange}
+            label="Practice Title"
+            variant="standard"
+            size="small"
+            fullWidth
+            sx={{marginRight: 6}}
+          />
+          <IconButton
+            color="error"
+            onClick={toggleConfirmationDialog}
+            disabled={sessionsNumberError}
+            aria-label="settings"
+          >
+            <RemoveCircleOutlineIcon />
+          </IconButton>
+          <IconButton
+            color="success"
+            onClick={updateTracker}
+            disabled={sessionsNumberError}
+            aria-label="settings"
+          >
+            <CheckCircleOutlineIcon />
+          </IconButton>
+        </Stack>
+        <Stack direction="row">
+          <TextField
+            id="sessions"
+            value={sessionsNumber}
+            onChange={handleNumberChange}
+            error={sessionsNumberError}
+            label="Number of Sessions"
+            variant="standard"
+            size="small"
+            required
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                checked={shouldUsePenalty}
+                onChange={handlePenaltyChange}
+              />
+            }
+            label="Use penalty"
+            sx={{marginLeft: 1}}
+          />
+        </Stack>
+      </Box>
+      <Confirmation
+        isOpen={isConfirmationOpen}
+        content="Do you want to delete this tracker?"
+        onClose={toggleConfirmationDialog}
+        onConfirm={deleteTracker}
+      />
+    </>
   );
 }
