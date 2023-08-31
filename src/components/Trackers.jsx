@@ -3,6 +3,8 @@ import Tracker from './Tracker'
 import { nanoid } from 'nanoid'
 import { Stack, IconButton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
+import Confirmation from './Confirmation'
+import { useToggle } from '../utils/hooks'
 
 const TEMPLATE = {
   id: '',
@@ -16,6 +18,8 @@ const TEMPLATE = {
 const LS_ITEM_NAME = 'trackers'
 
 export default function Trackers() {
+  const [isConfirmationOpen, toggleConfirmation] = useToggle()
+
   const load = () => JSON.parse(localStorage.getItem(LS_ITEM_NAME))
   const save = (data) =>
     localStorage.setItem(LS_ITEM_NAME, JSON.stringify(data))
@@ -45,13 +49,11 @@ export default function Trackers() {
 
   const actions = { update, remove }
 
-  const deleteConfirmationText = 'Do you want to delete this tracker?'
-
   return (
     <>
       <Stack direction="row" justifyContent="right">
         <IconButton
-          onClick={create}
+          onClick={toggleConfirmation}
           aria-label="create"
           sx={{ paddingBottom: 0 }}
         >
@@ -61,6 +63,12 @@ export default function Trackers() {
       {data?.map((it) => (
         <Tracker data={it} actions={actions} key={it.id} />
       ))}
+      <Confirmation
+        isOpen={isConfirmationOpen}
+        content="Do you want to add new tracker?"
+        onClose={toggleConfirmation}
+        onConfirm={create}
+      />
     </>
   )
 }
