@@ -69,6 +69,7 @@ export default function Settings({ data, actions }) {
           variant="standard"
           size="small"
           fullWidth
+          sx={{marginRight: 6}}
         />
         <IconButton
           color="error"
