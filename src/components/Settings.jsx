@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { useToggle } from '../utils/hooks';
 
 import {
   Stack,
@@ -17,7 +18,7 @@ export default function Settings({ data, actions }) {
 
   const {toggleSettings, update, remove} = actions
 
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
+  const [isConfirmationOpen, toggleConfirmation] = useToggle()
   const [sessionsNumber, setSessionsNumber] = useState(target)
   const [practiceTitle, setPracticeTitle] = useState(title)
   const [shouldUsePenalty, setShouldUsePenalty] = useState(usePenalty)
@@ -55,9 +56,6 @@ export default function Settings({ data, actions }) {
     toggleSettings()
   }
 
-  const toggleConfirmationDialog = 
-    () => setIsConfirmationOpen((prev) => !prev)
-
   return (
     <>
       <Box p={1} pr={0} pt={0}>
@@ -79,7 +77,7 @@ export default function Settings({ data, actions }) {
           />
           <IconButton
             color="error"
-            onClick={toggleConfirmationDialog}
+            onClick={toggleConfirmation}
             disabled={sessionsNumberError}
             aria-label="settings"
           >
@@ -121,7 +119,7 @@ export default function Settings({ data, actions }) {
       <Confirmation
         isOpen={isConfirmationOpen}
         content="Do you want to delete this tracker?"
-        onClose={toggleConfirmationDialog}
+        onClose={toggleConfirmation}
         onConfirm={deleteTracker}
       />
     </>
