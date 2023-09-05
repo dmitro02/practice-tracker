@@ -5,15 +5,7 @@ import { Stack, IconButton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Confirmation from './Confirmation'
 import { useToggle } from '../utils/hooks'
-
-const TEMPLATE = {
-  id: '',
-  title: 'New Practice',
-  target: 5,
-  usePenalty: true,
-  left: 5,
-  last: '',
-}
+import { TRACKER_TEMPLATE } from '../constants'
 
 const LS_ITEM_NAME = 'trackers'
 
@@ -21,10 +13,11 @@ export default function Trackers() {
   const [isConfirmationOpen, toggleConfirmation] = useToggle()
 
   const load = () => JSON.parse(localStorage.getItem(LS_ITEM_NAME))
+
   const save = (data) =>
     localStorage.setItem(LS_ITEM_NAME, JSON.stringify(data))
 
-  const getNewPractice = () => ({ ...TEMPLATE, id: nanoid() })
+  const getNewPractice = () => ({ ...TRACKER_TEMPLATE, id: nanoid() })
 
   const [data, setData] = useState(load() || [getNewPractice()])
 

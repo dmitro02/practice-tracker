@@ -1,7 +1,8 @@
+import { useEffect } from 'react'
+import moment from 'moment/moment'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import SettingsIcon from '@mui/icons-material/Settings'
 import DoneIcon from '@mui/icons-material/Done'
-
 import {
   Stack,
   Box,
@@ -10,6 +11,7 @@ import {
   IconButton,
   Typography,
 } from '@mui/material'
+import { PENALTY_INTERVAL, PENALTY_CHECK_UNIT } from '../constants'
 
 export default function Progress({ data, actions }) {
   const { title, target, usePenalty, left } = data
@@ -18,11 +20,29 @@ export default function Progress({ data, actions }) {
 
   const step = target - left
 
-  const moveProgress = () => {
-    const newData = {
+  const applyPenalty = () => {
+    const penalty = calculatePenalty(data)
+    if (!penalty) return { ...data }
+    const newRest = calculateNewRest(data, penalty)
+    return {
       ...data,
-      left: data.left - 1,
+      left: newRest,
+      appliedPenalty: data.appliedPenalty + penalty,
+    }
+  }
+
+  useEffect(() => {
+    const newData = applyPenalty()
+    update(newData)
+  }, [])
+
+  const moveProgress = () => {
+    const dataWithPenalty = applyPenalty()
+    const newData = {
+      ...dataWithPenalty,
+      left: dataWithPenalty.left - 1,
       last: new Date().toISOString(),
+      appliedPenalty: 0,
     }
     update(newData)
   }
@@ -32,6 +52,7 @@ export default function Progress({ data, actions }) {
       ...data,
       left: data.target,
       last: '',
+      appliedPenalty: 0,
     }
     update(newData)
   }
@@ -92,4 +113,19 @@ export default function Progress({ data, actions }) {
       </Stack>
     </>
   )
+}
+
+const calculatePenalty = (tracker) => {
+  const { target, left, last, appliedPenalty } = tracker
+  if (!left || target === left) {
+    return
+  }
+  const diff = moment().diff(last, PENALTY_CHECK_UNIT)
+  return Math.floor(diff / PENALTY_INTERVAL) - appliedPenalty
+}
+
+const calculateNewRest = (tracker, penalty) => {
+  const { target, left } = tracker
+  const newRest = left + penalty
+  return newRest > target ? target : newRest
 }
